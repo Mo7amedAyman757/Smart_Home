@@ -1,0 +1,13 @@
+
+Memory Summary:
+<<<<<<<< HEAD:dist/default/production/Smart_Home_SlaveMCU.production.mum
+    Program space        used  1832h (  6194) of 10000h bytes   (  9.5%)
+    Data space           used    DFh (   223) of   F60h bytes   (  5.7%)
+========
+    Program space        used  220Ch (  8716) of 10000h bytes   ( 13.3%)
+    Data space           used   119h (   281) of   F60h bytes   (  7.1%)
+>>>>>>>> 22c14f3ef1956f6bdab906416641732c28e078a6:dist/default/production/Smart_home_masterMCU.production.mum
+    Configuration bits   used     7h (     7) of     7h words   (100.0%)
+    EEPROM space         used     0h (     0) of   400h bytes   (  0.0%)
+    ID Location space    used     0h (     0) of     8h bytes   (  0.0%)
+

@@ -1,0 +1,72 @@
+/* 
+ * File:   application.h
+ * Author: LEGION
+ *
+ * Created on September 2, 2024, 2:20 PM
+ */
+
+
+#include "application.h"
+
+
+STD_ReturnType ret = E_OK;
+
+ccp_t ccp1_pwm = {
+    .CCP1_InterruptHandler = NULL,
+    .ccp1_priority = INTERRUPT_LOW_PRIORITY,
+    .PWM_frequency = 20000,
+    .ccp_inst = CCP1_INST,
+    .ccp_mode = CCP_PWM_SELECT,
+    .ccp_mode_variant = CCP_PWM_MODE,
+    .pin_cfg.port = PORTC_INDEX,
+    .pin_cfg.pin = GPIO_PIN2,
+    .pin_cfg.direction = GPIO_DIRECTION_OUTPUT,
+    .timer2_postscaler_val = CCP_TIMER2_POSTSCALER_DIV_BY_1,
+    .timer2_prescaler_val = CCP_TIMER2_PRESCALER_DIV_BY_1
+};
+
+ccp_t ccp2_pwm = {
+    .CCP2_InterruptHandler = NULL,
+    .ccp2_priority = INTERRUPT_LOW_PRIORITY,
+    .PWM_frequency = 20000,
+    .ccp_inst = CCP2_INST,
+    .ccp_mode = CCP_PWM_SELECT,
+    .ccp_mode_variant = CCP_PWM_MODE,
+    .pin_cfg.port = PORTC_INDEX,
+    .pin_cfg.pin = GPIO_PIN1,
+    .pin_cfg.direction = GPIO_DIRECTION_OUTPUT,
+    .timer2_postscaler_val = CCP_TIMER2_POSTSCALER_DIV_BY_1,
+    .timer2_prescaler_val = CCP_TIMER2_PRESCALER_DIV_BY_1
+};
+
+timer2_t timer2 = {
+    .timer2_InterruptHandler = NULL,
+    .priority = INTERRUPT_LOW_PRIORITY,
+    .timer2_prescaler_val = TIMER2_PRESCALER_DIV_BY_1,
+    .timer2_postscaler_val = TIMER2_POSTSCALER_DIV_BY_1,
+    .timer2_preload_val = 0
+};
+
+int main() {
+    application_initialize();
+
+    ret = CCP_PWM_Set_Duty(&ccp1_pwm, 75);
+    ret = CCP_PWM_Start(&ccp1_pwm);
+    ret = CCP_PWM_Set_Duty(&ccp2_pwm, 50);
+    ret = CCP_PWM_Start(&ccp2_pwm);
+    while (1) {
+
+
+
+
+    }
+}
+
+void application_initialize(void) {
+    ecu_layer_initialize();
+    CCP_Init(&ccp1_pwm);
+    CCP_Init(&ccp2_pwm);
+    timer2_init(&timer2);
+}
+
+

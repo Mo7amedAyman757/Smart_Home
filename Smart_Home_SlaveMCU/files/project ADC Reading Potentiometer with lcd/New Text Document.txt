@@ -1,0 +1,31 @@
+int main() {
+
+    application_initialize();
+    led_turn_on(&led4);
+    ret = lcd_4bit_send_string_pos(&lcd_1, 1, 5, (unsigned char *) "ADC Test");
+    __delay_ms(2000);
+    ret = lcd_4bit_send_command(&lcd_1, _LCD_CLEAR);
+    __delay_ms(200);
+    ret = lcd_4bit_send_string_pos(&lcd_1, 1, 1, (unsigned char *) "Pot0: ");
+    ret = lcd_4bit_send_string_pos(&lcd_1, 2, 1, (unsigned char *) "Pot1: ");
+    while (1) {
+        ret = ADC_GetConversion_Blocking(&adc1, ADC_CHANNEL_AN0, &adc_res_1);
+
+        ret = ADC_GetConversion_Blocking(&adc1, ADC_CHANNEL_AN1, &adc_res_2);
+
+        ret = convert_short_to_string(adc_res_1, adc_rse_1_txt);
+
+        ret = convert_short_to_string(adc_res_2, adc_rse_2_txt);
+
+        ret = lcd_4bit_send_string_pos(&lcd_1, 1, 7, adc_rse_1_txt);
+
+        ret = lcd_4bit_send_string_pos(&lcd_1, 2, 7, adc_rse_2_txt);
+    }
+
+    return (EXIT_SUCCESS);
+}
+
+void application_initialize(void) {
+    ecu_layer_initialize();
+    ret = ADC_Init(&adc1);
+}

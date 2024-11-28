@@ -1,0 +1,36 @@
+#include "application.h"
+
+
+STD_ReturnType ret = E_OK;
+
+int main() {
+    application_initialize();
+    __delay_ms(2000);
+    lcd_4bit_send_char_string_pos(&lcd_1, 1, 1, (uint8 *) "Hello World");
+    __delay_ms(2000);
+    lcd_4bit_send_command(&lcd_1, _LCD_CLEAR);
+    data_EEPROM_WriteByte(0x3ff, 0);
+    data_EEPROM_ReadByte(0x3ff, &program_selected);
+    while (1) {
+        if (1 == program_selected) {
+            program_1();
+            lcd_4bit_send_char_string_pos(&lcd_1, 1, 1, (uint8 *) "Program1 is ON ");
+        } else if (2 == program_selected) {
+            program_2();
+            lcd_4bit_send_char_string_pos(&lcd_1, 1, 1, (uint8 *) "Program2 is ON ");
+        } else {
+            program_selected = 0;
+            led_turn_off(&led1);
+            led_turn_off(&led2);
+            //lcd_4bit_send_command(&lcd_1, _LCD_CLEAR);
+            lcd_4bit_send_char_string_pos(&lcd_1, 1, 1, (uint8 *) "Programs is OFF");
+        }
+    }
+}
+  
+void application_initialize(void) {
+    ecu_layer_initialize();
+    ret = interrupt_INTx_init(&int_obj0);
+    //ret = interrupt_INTx_init(&int_obj1);
+    ret = interrupt_RBx_init(&RB_obj4);
+}

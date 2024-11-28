@@ -1,0 +1,65 @@
+/* 
+ * File:   application.h
+ * Author: LEGION
+ *
+ * Created on September 2, 2024, 2:20 PM
+ */
+
+
+#include "application.h"
+
+
+STD_ReturnType ret = E_OK;
+
+void ccp1_interrupthandler(void);
+uint8 callback_flag = 0;
+
+ccp_t ccp_compare = {
+    .ccp_inst = CCP1_INST,
+    .CCP1_InterruptHandler = ccp1_interrupthandler,
+    .ccp1_priority = INTERRUPT_LOW_PRIORITY,
+    .ccp_mode = CCP_COMPARE_SELECT,
+    .ccp_mode_variant = CCP_COMPARE_MODE_SET_LOW_OUTPUT,
+    .pin_cfg.port = PORTC_INDEX,
+    .pin_cfg.pin = GPIO_PIN2,
+    .pin_cfg.direction = GPIO_DIRECTION_OUTPUT,
+    .ccp_capture_compare_timer3 = CCP1_CCP2_TIMER3
+};
+
+timer3_t timer3 = {
+    .timer3_InterruptHandler = NULL,
+    .priority = INTERRUPT_LOW_PRIORITY,
+    .timer3_mode = TIMER3_TIMER_MODE_CFG,
+    .preload_val = 0,
+    .timer3_prescaler = TIMER3_PRESCALER_DIV_BY_1,
+    .timer3_reg = TIMER3_RW_REG_8BIT_CFG,
+};
+
+void ccp1_interrupthandler(void) {
+    callback_flag++;
+    Timer3_Write_value(&timer3, 0);
+    if (callback_flag == 1) {
+        CCP_CompareSetValue(&ccp_compare, 12500);
+        CCP1_MODE_SELECT(CCP_COMPARE_MODE_SET_HIGH_OUTPUT);
+    } else if (callback_flag == 2) {
+        CCP_CompareSetValue(&ccp_compare, 37500);
+        CCP1_MODE_SELECT(CCP_COMPARE_MODE_SET_LOW_OUTPUT);
+        callback_flag = 0;
+    }
+}
+
+int main() {
+    application_initialize();
+    while (1) {
+
+    }
+}
+
+void application_initialize(void) {
+    ecu_layer_initialize();
+    CCP_CompareSetValue(&ccp_compare, 37500);
+    CCP_Init(&ccp_compare);
+    Timer3_Init(&timer3);
+}
+
+

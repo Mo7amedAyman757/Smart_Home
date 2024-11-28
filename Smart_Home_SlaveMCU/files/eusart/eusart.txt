@@ -1,0 +1,16 @@
+//        ret = EUSART_ASYNC_WRITE_BYTE_BLOCKING(&usart1, 'a');
+        //        __delay_ms(1000);
+        //        ret = EUSART_ASYNC_WRITE_BYTE_BLOCKING(&usart1, 'b');
+        //        __delay_ms(1000);
+
+        //        ret = EUSART_ASYNC_READ_BYTE_NON_BLOCKING(&usart1, &rec_uart_data);
+        //        if (ret == E_OK) {
+        //            if ('a' == rec_uart_data) {
+        //                led_turn_on(&led1);
+        //                ret = EUSART_ASYNC_WRITE_STRING_BLOCKING(&usart1, (uint8*) "Led ON\r", 7);
+        //            } else if ('b' == rec_uart_data) {
+        //                led_turn_off(&led1);
+        //                ret = EUSART_ASYNC_WRITE_STRING_BLOCKING(&usart1, (uint8*) "Led OFF\r", 8);
+        //            } else {
+        //            }
+        //        }
